@@ -1,11 +1,9 @@
 "use server"
 
-import { PASSWORD_MIN_LENGTH, PASSWORD_REGEX, PASSWORD_REGEX_ERROR } from "@/lib/constants"
 import db from "@/lib/db";
 import { z } from "zod"
 import bcrypt from "bcrypt";
-import getSession from "@/lib/session";
-import { redirect } from "next/navigation";
+import Login from "@/lib/login";
 
 const checkEmailExists = async (email: string) => {
     const user = await db.user.findUnique({
@@ -54,11 +52,7 @@ export const login = async (prevState: any, formData: FormData) => {
 
         const ok = await bcrypt.compare(result.data.password, user!.password ?? "");
         if(ok) {
-            const session = await getSession();
-            session.id = user!.id;
-            session.save();
-
-            redirect("/profile");
+            return Login(user!.id);
         } else {
             return {
                 fieldErrors: {

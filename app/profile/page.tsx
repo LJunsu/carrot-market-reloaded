@@ -4,13 +4,14 @@ import { notFound, redirect } from "next/navigation";
 
 async function getUser(){
     const session = await getSession();
+    console.log(session);
     if(session.id) {
         const user = await db.user.findUnique({
             where: {
                 id: session.id
             }
         });
-
+        
         if(user) {
             return user;
         }
@@ -23,7 +24,7 @@ export default async function Profile() {
     const logOut = async () => {
         "use server";
         const session = await getSession();
-        await session.destroy();
+        session.destroy();
         redirect("/");
     }
 
