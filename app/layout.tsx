@@ -12,12 +12,14 @@ export const metadata: Metadata = {
   description: "Sell and buy all the things!",
 };
 
-export default function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
+export default function RootLayout({
+  children, 
+}: Readonly<{children: React.ReactNode}>) {
   return (
     <html lang="en">
       <body
-        className={`
-          ${inter.className} bg-neutral-900 text-white max-w-screen-sm mx-auto`
+        className={
+          `${inter.className} bg-neutral-900 text-white max-w-screen-sm mx-auto`
         }
       >
         {children}

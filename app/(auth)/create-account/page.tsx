@@ -1,6 +1,6 @@
 "use client";
 
-import "../globals.css";
+import "@/app/globals.css";
 import Input from "@/components/input";
 import Button from "@/components/button";
 import SocialLogin from "@/components/social-login";

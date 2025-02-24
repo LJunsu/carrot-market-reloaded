@@ -1,26 +1,10 @@
 "use server";
 
-import { z } from "zod";
 import fs from "fs/promises";
 import db from "@/lib/db";
 import getSession from "@/lib/session";
 import { redirect } from "next/navigation";
-
-
-const productSchema = z.object({
-    photo: z.string({
-        required_error: "Photo is required"
-    }),
-    title: z.string({
-        required_error: "Title is required"
-    }),
-    description: z.string({
-        required_error: "Description is required"
-    }),
-    price: z.coerce.number({
-        required_error: "Price is required"
-    })
-})
+import { productSchema } from "./schema";
 
 export async function uploadProduct(_: any, formData: FormData) {
     const data = {
@@ -30,6 +14,10 @@ export async function uploadProduct(_: any, formData: FormData) {
         description: formData.get("description")
     };
 
+    if(data.photo instanceof File && data.photo.size <= 0) {
+        return { fieldErrors: { photo: "Photo is required" } };
+    }
+
     if(data.photo instanceof File) {
         const photoData = await data.photo.arrayBuffer();
         await fs.appendFile(`./public/${data.photo.name}`, Buffer.from(photoData));
@@ -38,7 +26,7 @@ export async function uploadProduct(_: any, formData: FormData) {
 
     const result = productSchema.safeParse(data);
     if(!result.success) {
-        return result.error.flatten()
+        return result.error.flatten();
     } else {
         const session = await getSession();
         if(session.id) {

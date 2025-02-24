@@ -5,9 +5,17 @@ import Input from "@/components/input";
 import { PhotoIcon } from "@heroicons/react/24/solid";
 import { useActionState, useState } from "react";
 import { uploadProduct } from "./actions";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { productSchema, ProductType } from "./schema";
 
 export default function AddProduct() {
     const [preview, setPreview] = useState("");
+
+    const {register} = useForm<ProductType>({
+        resolver: zodResolver(productSchema)
+    });
+
     const onImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {
             target: {files}
@@ -60,25 +68,25 @@ export default function AddProduct() {
 
                 <Input
                     type="text"
-                    name="title"
                     required
                     placeholder="제목"
+                    {...register("title")}
                     errors={state?.fieldErrors.title}
                 />
 
                 <Input
                     type="number"
-                    name="price"
                     required
                     placeholder="가격"
+                    {...register("price")}
                     errors={state?.fieldErrors.price}
                 />
 
                 <Input
                     type="text"
-                    name="description"
                     required
                     placeholder="자세한 설명"
+                    {...register("description")}
                     errors={state?.fieldErrors.description}
                 />
 
