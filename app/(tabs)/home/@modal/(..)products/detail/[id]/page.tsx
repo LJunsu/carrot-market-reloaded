@@ -6,8 +6,10 @@ import { PhotoIcon, UserIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import { revalidateTag } from "next/cache";
 
 async function getModalProduct(id: number) {
+
     const product = await db.product.findUnique({
         where: {
             id
@@ -37,7 +39,7 @@ interface ModalProductProps {
     params: Promise<{id: string}>;
 }
 export default async function Modal({params}: ModalProductProps) {
-    const {id} = await params;
+    const { id } = await params;
     const numberId = Number(id);
     if(isNaN(numberId)) return notFound();
 
@@ -60,7 +62,8 @@ export default async function Modal({params}: ModalProductProps) {
             }
         });
 
-        redirect("/products");
+        revalidateTag("products");
+        redirect("/home");
     }
 
     return (
@@ -69,7 +72,7 @@ export default async function Modal({params}: ModalProductProps) {
                 absolute w-full h-full z-50 flex justify-center items-center
                 bg-black bg-opacity-60 left-0 top-0"
         >
-            <div className="max-w-screen-sm h-1/2 w-full flex justify-center flex-col gap-2">
+            <div className="max-w-screen-sm w-full flex justify-center flex-col gap-2 bg-neutral-800 p-5 rounded-lg">
                 <ModalCloseButton />
 
                 <div className="w-full py-2 flex justify-between">
@@ -87,12 +90,21 @@ export default async function Modal({params}: ModalProductProps) {
                     </div>
 
                     {isOwner 
-                    ? <form action={productDelete}>
-                        <button className="
-                            bg-red-500 p-2
-                            rounded-md text-white font-semibold"
-                        >삭제</button>
-                    </form> 
+                    ? <>
+                        <form action={productDelete}>
+                            <button className="
+                                bg-red-500 p-2
+                                rounded-md text-white font-semibold"
+                            >삭제</button>
+                        </form>
+
+                        <Link 
+                            className="
+                                bg-orange-500 p-2
+                                rounded-md text-white font-semibold" 
+                            href={`/products/detail/${id}/edit`}
+                        >수정</Link>
+                    </>
                     : <Link 
                         className="
                             bg-orange-500 p-2

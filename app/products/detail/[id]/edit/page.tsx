@@ -3,13 +3,17 @@
 import Button from "@/components/button";
 import Input from "@/components/input";
 import { PhotoIcon } from "@heroicons/react/24/solid";
-import { useActionState, useState } from "react";
-import { uploadProduct } from "./actions";
+import { useActionState, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { productSchema, ProductType } from "./schema";
+import { productSchema, ProductType } from "@/app/products/add/schema";
+import { updateProduct } from "./action";
+import { useParams } from "next/navigation";
+import updateInit from "@/lib/update-init";
 
-export default function AddProduct() {
+export default function EditProduct() {
+    const {id} = useParams();
+
     const [preview, setPreview] = useState("");
 
     const {register} = useForm<ProductType>({
@@ -36,7 +40,28 @@ export default function AddProduct() {
         setPreview(url);
     }
 
-    const [state, action] = useActionState(uploadProduct, null);
+    const [state, action] = useActionState(updateProduct, null);
+
+    const [productIdInp, setProductIdInp] = useState<string>("");
+    const [productTitleInp, setProductTitleInp] = useState<string>("");
+    const [productPriceInp, setProductPriceInp] = useState<number>(0);
+    const [productDescriptionInp, setProductDescriptionInp] = useState<string>("");
+
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            const product = await updateInit(Number(id));
+            setProductIdInp(String(id));
+            setPreview(product?.photo || "");
+            setProductTitleInp(product?.title || "");
+            setProductPriceInp(product?.price || 0);
+            setProductDescriptionInp(product?.description || "");
+        };
+
+        if(id) {
+            fetchProduct();
+        }
+    }, [id]);
 
     return (
         <div>
@@ -66,12 +91,17 @@ export default function AddProduct() {
                     className="hidden"
                 />
 
+                <input 
+                    type="text" id="productId" name="productId" value={productIdInp} className="hidden" readOnly
+                />
+
                 <Input
                     type="text"
                     required
                     placeholder="제목"
                     {...register("title")}
                     errors={state?.fieldErrors && "title" in state.fieldErrors ? state.fieldErrors.title : undefined}
+                    value={productTitleInp}
                 />
 
                 <Input
@@ -80,6 +110,7 @@ export default function AddProduct() {
                     placeholder="가격"
                     {...register("price")}
                     errors={state?.fieldErrors && "price" in state.fieldErrors ? state.fieldErrors.price : undefined}
+                    value={String(productPriceInp)}
                 />
 
                 <Input
@@ -88,9 +119,10 @@ export default function AddProduct() {
                     placeholder="자세한 설명"
                     {...register("description")}
                     errors={state?.fieldErrors && "description" in state.fieldErrors ? state.fieldErrors.description : undefined}
+                    value={productDescriptionInp}
                 />
 
-                <Button text="작성 완료" />
+                <Button text="수정 완료" />
             </form>
         </div>
     )

@@ -1,6 +1,6 @@
 "use client";
 
-import "../globals.css";
+import "@/app/globals.css";
 import Input from "@/components/input";
 import Button from "@/components/button";
 import { smsLogIn } from "./actions";
@@ -15,6 +15,7 @@ const initialState  = {
 export default function SMSLogin() {
     const [state, dispatch] = useActionState(smsLogIn, initialState);
     const {token, error, phone} = state ?? initialState;
+    console.log(token);
 
     return (
         <div className="flex flex-col gap-10 py-8 px-6">
@@ -39,7 +40,7 @@ export default function SMSLogin() {
                         placeholder="Phone number"
                         required
                         errors={error?.formErrors}
-                        defaultValue={phone ?? ""}
+                        defaultValue={(phone as string) ?? ""}
                     />
                 }
 

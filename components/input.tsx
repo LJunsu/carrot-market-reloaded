@@ -3,11 +3,13 @@ import { InputHTMLAttributes } from "react";
 interface InputProps {
     errors?: string[];
     name: string;
+    value?: string;
 }
 export default function Input(
     {
         errors = [], 
         name,
+        value,
         ...rest
     } : InputProps & InputHTMLAttributes<HTMLInputElement>
 ) {
@@ -23,6 +25,7 @@ export default function Input(
                     ring-neutral-200 focus:ring-orange-500
                     placeholder:text-neutral-400"
                 {...rest} 
+                defaultValue={value}
             />
 
             {errors.map((error, index) => (

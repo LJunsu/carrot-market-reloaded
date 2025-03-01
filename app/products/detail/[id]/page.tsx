@@ -2,6 +2,7 @@ import db from "@/lib/db";
 import getSession from "@/lib/session";
 import { formatToWon } from "@/lib/utils";
 import { UserIcon } from "@heroicons/react/24/solid";
+import { revalidateTag } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
@@ -33,11 +34,21 @@ async function getProduct(id: number) {
     return product;
 }
 
+export async function generateMetadata({params}: ProductDetailPageProps) {
+    const {id} = await params;
+
+    const product = await getProduct(Number(id));
+
+    return {
+        title: product?.title
+    }
+}
+
 interface ProductDetailPageProps {
     params: Promise<{id: string}>;
 }
 export default async function ProductDetail({params}: ProductDetailPageProps) {
-    const {id} = await params;
+    const { id } = await params;
     const numberId = Number(id);
     if(isNaN(numberId)) {
         return notFound();
@@ -58,13 +69,14 @@ export default async function ProductDetail({params}: ProductDetailPageProps) {
             return
         }
 
-        const deleteProduct = await db.product.delete({
+        await db.product.delete({
             where: {
                 id: product.id
             }
         });
 
-        redirect("/products");
+        revalidateTag("products");
+        redirect("/home");
     }
 
     return (
@@ -103,18 +115,25 @@ export default async function ProductDetail({params}: ProductDetailPageProps) {
                 <span className="font-semibold text-lg1">{formatToWon(product.price)} 원</span>
                 
                 {isOwner 
-                ? <form action={productDelete}>
-                    <button className="bg-red-500 px-5 py-2.5 
-                        rounded-md text-white font-semibold"
-                    >Delete product</button>
-                </form> 
+                ? <>
+                    <form action={productDelete}>
+                        <button className="bg-red-500 px-5 py-2.5 
+                            rounded-md text-white font-semibold"
+                        >삭제</button>
+                    </form> 
+
+                    <Link 
+                            className="
+                                bg-orange-500 px-5 py-2.5 
+                                rounded-md text-white font-semibold" 
+                            href={`/products/detail/${id}/edit`}
+                        >수정</Link>
+                </>
                 : <Link 
                     className="bg-orange-500 px-5 py-2.5 
                     rounded-md text-white font-semibold" 
                     href={``}
                 >채팅하기</Link>}
-                
-
             </div>
         </div>
     )

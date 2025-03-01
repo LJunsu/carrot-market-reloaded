@@ -40,7 +40,7 @@ export default function CreateAccount() {
                     errors={error?.fieldErrors.username}
                     minLength={3}
                     maxLength={10}
-                    defaultValue={username ?? ""}
+                    defaultValue={(username as string) ?? ""}
                 />
 
                 <Input
@@ -50,7 +50,7 @@ export default function CreateAccount() {
                     required
                     // errors={state?.fieldErrors.email}
                     errors={error?.fieldErrors.email}
-                    defaultValue={email ?? ""}
+                    defaultValue={(email as string) ?? ""}
                 />
 
                 <Input
@@ -61,7 +61,7 @@ export default function CreateAccount() {
                     // errors={state?.fieldErrors.password}
                     errors={error?.fieldErrors.password}
                     minLength={PASSWORD_MIN_LENGTH}
-                    defaultValue={password ?? ""}
+                    defaultValue={(password as string) ?? ""}
                 />
 
                 <Input
@@ -72,7 +72,7 @@ export default function CreateAccount() {
                     // errors={state?.fieldErrors.confirm_password}
                     errors={error?.fieldErrors.confirm_password}
                     minLength={PASSWORD_MIN_LENGTH}
-                    defaultValue={confirm_password ?? ""}
+                    defaultValue={(confirm_password as string) ?? ""}
                 />
 
                 <Button

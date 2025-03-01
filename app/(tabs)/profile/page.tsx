@@ -1,39 +1,48 @@
 import db from "@/lib/db";
 import getSession from "@/lib/session";
 import { notFound, redirect } from "next/navigation";
+import { Suspense } from "react";
 
-async function getUser(){
+async function getUser() {
     const session = await getSession();
-    console.log(session);
-    if(session.id) {
+
+    if (session.id) {
         const user = await db.user.findUnique({
             where: {
-                id: session.id
-            }
+                id: session.id,
+            },
         });
-        
-        if(user) {
+        if (user) {
             return user;
         }
     }
+
     notFound();
 }
-
-export default async function Profile() {
+  
+async function Username() {
+    await new Promise((resolve) => setTimeout(resolve, 5000));
     const user = await getUser();
+    return <h1>Welcome! {user?.username}!</h1>;
+}
+  
+export default async function Profile() {
     const logOut = async () => {
         "use server";
         const session = await getSession();
         session.destroy();
         redirect("/");
-    }
+    };
 
     return (
         <div>
-            <h1>Welcom! {user?.username}</h1>
+            <Suspense fallback={"Welcome!"}>
+                <Username />
+            </Suspense>
+
             <form action={logOut}>
                 <button>Log out</button>
             </form>
         </div>
-    )
-} 
+    );
+}

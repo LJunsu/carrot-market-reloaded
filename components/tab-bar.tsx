@@ -26,10 +26,10 @@ export default function TabBar() {
             grid grid-cols-5 border-neutral-600 border-t px-5 py-3 *:text-white"
         >
             <Link
-                href="/products"
+                href="/home"
                 className="flex flex-col items-center gap-px"
             >
-                    {pathname === "/products" 
+                    {pathname === "/home" 
                     ? <SolidHomeIcon className="w-7 h-7" />
                     : <OutlineHomeIcon className="w-7 h-7" />}
                     
