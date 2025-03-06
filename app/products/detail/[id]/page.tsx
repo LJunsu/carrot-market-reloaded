@@ -6,6 +6,7 @@ import { revalidateTag } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import { createChatRoom } from "./actions";
 
 async function getIsOwner(userId: number) {
     const session = await getSession();
@@ -129,11 +130,14 @@ export default async function ProductDetail({params}: ProductDetailPageProps) {
                             href={`/products/detail/${id}/edit`}
                         >수정</Link>
                 </>
-                : <Link 
-                    className="bg-orange-500 px-5 py-2.5 
-                    rounded-md text-white font-semibold" 
-                    href={``}
-                >채팅하기</Link>}
+                : <form action={createChatRoom}>
+                    <input type="hidden" name="productUserId" value={product.userId} />
+                      
+                    <button 
+                        className="bg-orange-500 px-5 py-2.5 
+                        rounded-md text-white font-semibold" 
+                    >채팅하기</button>
+                </form>}
             </div>
         </div>
     )
