@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Roboto, Rubik_Scribble } from "next/font/google";
-import localFont from "next/font/local";
 import "./globals.css";
 
 const roboto = Roboto({
@@ -15,11 +14,6 @@ const rubik = Rubik_Scribble({
   weight: ["400"],
   style: ["normal"],
   variable: "--rubik-text"
-})
-
-const metallica = localFont({
-  src: "./metallica.ttf",
-  variable: "--metallica"
 })
 
 export const metadata: Metadata = {
