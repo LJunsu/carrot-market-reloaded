@@ -22,7 +22,8 @@ export default function ChatMessagesList({chatRoomId, userId, username, avatar, 
     const [messages, setMessages] = useState(initialMessages);
     const [message, setMessage] = useState("");
 
-    const channel = useRef<RealtimeChannel>();
+    // const channel = useRef<RealtimeChannel>();
+    const channel = useRef<RealtimeChannel>(null);
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const {

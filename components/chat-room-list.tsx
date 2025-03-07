@@ -45,7 +45,7 @@ export default function ChatRoomList({chatRoom, notReadMessage}: ChatRoomListPro
                 <div className="flex items-center gap-3 w-5/6">
                     <Image
                         width={50} height={50}
-                        src={chatRoom.users[0].avatar}
+                        src={chatRoom.users[0].avatar || ""}
                         alt={chatRoom.users[0].username}
                         className="size-10 rounded-full"
                     />

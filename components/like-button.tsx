@@ -13,6 +13,7 @@ interface LikeButtonProps {
 export default function LikeButton({isLiked, likeCount, postId}: LikeButtonProps) {
     const [state, reducerFn] = useOptimistic(
         {isLiked, likeCount}, 
+        /* eslint-disable @typescript-eslint/no-unused-vars */
         (previousState, payload) => {
             return {
                 isLiked: !previousState.isLiked,
