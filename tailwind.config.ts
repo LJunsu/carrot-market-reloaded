@@ -9,6 +9,10 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        roboto: "var(--roboto-text)",
+        rubik: "var(--rubik-text)"
+      },
       keyframes: {
         pulseCustom: {
           "0% 100%": {opacity: "1"},
