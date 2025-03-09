@@ -4,19 +4,21 @@ import Button from "@/components/button";
 import Input from "@/components/input";
 import { PhotoIcon } from "@heroicons/react/24/solid";
 import { useActionState, useState } from "react";
-import { uploadProduct } from "./actions";
+import { getUploadUrl, uploadProduct } from "./actions";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { productSchema, ProductType } from "./schema";
 
 export default function AddProduct() {
     const [preview, setPreview] = useState("");
+    const [uplodaUrl, setUploadUrl] = useState("");
+    const [imageId, setImageId] = useState("");
 
     const {register} = useForm<ProductType>({
         resolver: zodResolver(productSchema)
     });
 
-    const onImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const {
             target: {files}
         } = e;
@@ -34,9 +36,38 @@ export default function AddProduct() {
         const file = files[0];
         const url = URL.createObjectURL(file);
         setPreview(url);
+
+        const {success, result} = await getUploadUrl();
+        if(success) {
+            const {id, uploadURL} = result;
+            setUploadUrl(uploadURL);
+            setImageId(id);
+        }
     }
 
-    const [state, action] = useActionState(uploadProduct, null);
+    const interceptAction = async (_: unknown, formData: FormData) => {
+        const file = formData.get("photo");
+        if(!file) {
+            return;
+        }
+        const cloudflareForm = new FormData();
+        cloudflareForm.append("file", file);
+
+        const response = await fetch(uplodaUrl, {
+            method: "POST",
+            body: cloudflareForm
+        });
+        if(response.status !== 200) {
+            return;
+        }
+        
+        const photoUrl = `https://imagedelivery.net/PRjBLDB7Nrc6UjfrSGM0vw/${imageId}`;
+        formData.set("photo", photoUrl);
+
+        return uploadProduct(_, formData);
+    }
+
+    const [state, action] = useActionState(interceptAction, null);
 
     return (
         <div>

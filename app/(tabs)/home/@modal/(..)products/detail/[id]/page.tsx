@@ -125,7 +125,7 @@ export default async function Modal({params}: ModalProductProps) {
                         {product.photo === null
                         ? <PhotoIcon className="h-28" />
                         : <Image 
-                            fill src={product.photo} alt={product.title} 
+                            fill src={`${product.photo}/public`} alt={product.title} 
                             className="w-full h-full object-fill"
                         />}
                     </div>
