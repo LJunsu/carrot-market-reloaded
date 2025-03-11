@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-export async function GET() {
+export function GET() {
     const baseURL = "https://github.com/login/oauth/authorize";
     const params = {
         client_id: process.env.GITHUB_CLIENT_ID!,

@@ -62,7 +62,7 @@ export default function AddProduct() {
         }
         
         const photoUrl = `https://imagedelivery.net/PRjBLDB7Nrc6UjfrSGM0vw/${imageId}`;
-        formData.set("photo", photoUrl);
+        formData.set("photo", `${photoUrl}/public`);
 
         return uploadProduct(_, formData);
     }
@@ -71,6 +71,10 @@ export default function AddProduct() {
 
     return (
         <div>
+            <div className="w-full p-5 pt-10 text-2xl font-bold">
+                제품 등록
+            </div>
+
             <form action={action} className="p-5 flex flex-col gap-5">
                 <label 
                     htmlFor="photo" 

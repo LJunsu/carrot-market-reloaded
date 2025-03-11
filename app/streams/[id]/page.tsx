@@ -2,7 +2,8 @@ import db from "@/lib/db";
 import getSession from "@/lib/session";
 import { UserIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import Button from "@/components/button";
 
 async function getStream(id: number) {
     const stream = await db.liveStream.findUnique({
@@ -10,6 +11,7 @@ async function getStream(id: number) {
             id: id
         },
         select: {
+            id: true,
             title: true,
             stream_key: true,
             stream_id: true,
@@ -43,6 +45,18 @@ export default async function StreamDetail({params}: StreamDetailPageProps) {
 
     const session = await getSession();
 
+    const deleteAction = async () => {
+        "use server";
+
+        await db.liveStream.delete({
+            where: {
+                id: stream.id
+            }
+        });
+
+        redirect("/live");
+    }
+
     return (
         <div className="p-10">
             <div className="relative aspect-video">
@@ -63,7 +77,7 @@ export default async function StreamDetail({params}: StreamDetailPageProps) {
                         alt={stream.user.username}
                     />
                     ) : (
-                    <UserIcon />
+                        <UserIcon className="size-10" />
                     )}
                 </div>
                 <div>
@@ -76,7 +90,7 @@ export default async function StreamDetail({params}: StreamDetailPageProps) {
             </div>
 
             {stream.userId === session.id! 
-                ? (
+                ? (<>
                 <div className="bg-yellow-200 text-black p-5 rounded-md">
                     <div className="flex gap-2">
                         <span className="font-semibold">Stream URL:</span>
@@ -88,7 +102,11 @@ export default async function StreamDetail({params}: StreamDetailPageProps) {
                         <span>{stream.stream_key}</span>
                     </div>
                 </div>
-                ) 
+
+                <form className="py-3" action={deleteAction}>
+                    <Button text="삭제" />
+                </form>
+                </>)
                 : null
             }
         </div>

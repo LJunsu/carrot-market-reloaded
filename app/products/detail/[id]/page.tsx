@@ -84,7 +84,7 @@ export default async function ProductDetail({params}: ProductDetailPageProps) {
         <div>
             <div className="relative aspect-square">
                 <Image 
-                    fill src={`${product.photo}/public`} alt={product.title} 
+                    fill src={`${product.photo}`} alt={product.title} 
                     className="object-cover" 
                 />
             </div>
@@ -96,7 +96,7 @@ export default async function ProductDetail({params}: ProductDetailPageProps) {
                         src={product.user.avatar} 
                         alt={product.user.username} 
                         width={40} height={40} />
-                    : <UserIcon />}
+                    : <UserIcon className="size-10" />}
                 </div>
 
                 <div>
@@ -124,11 +124,11 @@ export default async function ProductDetail({params}: ProductDetailPageProps) {
                     </form> 
 
                     <Link 
-                            className="
-                                bg-orange-500 px-5 py-2.5 
-                                rounded-md text-white font-semibold" 
-                            href={`/products/detail/${id}/edit`}
-                        >수정</Link>
+                        className="
+                            bg-orange-500 px-5 py-2.5 
+                            rounded-md text-white font-semibold" 
+                        href={`/products/detail/${id}/edit`}
+                    >수정</Link>
                 </>
                 : <form action={createChatRoom}>
                     <input type="hidden" name="productUserId" value={product.userId} />
@@ -136,7 +136,7 @@ export default async function ProductDetail({params}: ProductDetailPageProps) {
                     <button 
                         className="bg-orange-500 px-5 py-2.5 
                         rounded-md text-white font-semibold" 
-                    >채팅하기</button>
+                    >채팅</button>
                 </form>}
             </div>
         </div>

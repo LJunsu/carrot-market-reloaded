@@ -31,6 +31,7 @@ CREATE TABLE "Product" (
     "price" DOUBLE PRECISION NOT NULL,
     "photo" TEXT NOT NULL,
     "description" TEXT NOT NULL,
+    "isSales" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "userId" INTEGER NOT NULL,

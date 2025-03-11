@@ -7,6 +7,7 @@ import { ArrowUpCircleIcon } from "@heroicons/react/24/solid";
 import { createClient, RealtimeChannel } from "@supabase/supabase-js";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react"
+import Button from "./button";
 
 const SUPABASE_PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZqeXRwYnBzZXRpb3pzY2VnaGd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDExNjk4NDIsImV4cCI6MjA1Njc0NTg0Mn0.W9YqHQx2J75TL-qd7eO6HD-ozMgWPbuCbCHTZcHSwIU";
 const SUPABASE_URL = "https://fjytpbpsetiozsceghgt.supabase.co";
@@ -83,7 +84,11 @@ export default function ChatMessagesList({chatRoomId, userId, username, avatar, 
     }, [chatRoomId]);
 
     return (
-        <div className="p-5 flex flex-col gap-5 min-h-screen justify-end">
+        <div className="relative p-5 flex flex-col gap-5 min-h-screen justify-end">
+            <div className="absolute w-full p-3 top-0 left-0">
+                <Button text="거래 신청" />
+            </div>
+
             {messages.map((message) => (
                 <div 
                     key={message.id} 

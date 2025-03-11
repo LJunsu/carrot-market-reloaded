@@ -3,12 +3,13 @@
 import { InitialProducts } from "@/app/(tabs)/home/page";
 import ListProduct from "./list-product";
 import { useEffect, useRef, useState } from "react";
-import { getMoreProducts } from "@/app/(tabs)/home/actions";
+import { getMoreUserProducts } from "@/app/(tabs)/profile/actions";
 
 interface ProductListProps {
+    userId: number,
     initialProducts: InitialProducts
 }
-export default function ProductList({initialProducts}: ProductListProps) {
+export default function UserProductList({userId, initialProducts}: ProductListProps) {
     const [products, setProducts] = useState(initialProducts);
     const [isLoading, setIsLoading] = useState(false);
     const [page, setPage] = useState(0);
@@ -22,7 +23,7 @@ export default function ProductList({initialProducts}: ProductListProps) {
                 if(element.isIntersecting && trigger.current) {
                     observer.unobserve(trigger.current);
                     setIsLoading(true);
-                    const newProducts = await getMoreProducts(page + 1);
+                    const newProducts = await getMoreUserProducts(userId, page + 1);
 
                     if(newProducts.length !== 0) {
                         setPage(prev => prev + 1);
@@ -48,7 +49,7 @@ export default function ProductList({initialProducts}: ProductListProps) {
     }, [page]);
 
     return (
-        <div className="p-5 flex flex-col gap-5">
+        <div className="p-5 flex flex-col gap-5 h-full overflow-auto">
             {products.map((product) => 
                 <ListProduct key={product.id} {...product} />
             )}
@@ -56,7 +57,7 @@ export default function ProductList({initialProducts}: ProductListProps) {
             {!isLastPage ? <span
                 ref={trigger}
                 style={{
-                    marginTop: `${page + 1 * 80}vh`
+                    marginTop: `${page + 1 * 20}vh`
                 }}
                 className="mb-96
                 text-sm font-semibold bg-orange-500

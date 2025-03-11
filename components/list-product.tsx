@@ -18,7 +18,7 @@ export default function ListProduct({
             className="flex gap-5"
         >
             <div className="relative size-28 rounded-md overflow-hidden">
-                <Image fill src={`${photo}/public`} alt={title} className="object-cover" />
+                <Image fill src={`${photo}`} alt={title} className="object-cover" />
             </div>
 
             <div className="flex flex-col gap-1 *:text-white">

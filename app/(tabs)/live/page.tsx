@@ -1,6 +1,6 @@
 import db from "@/lib/db";
 import { formatToTimeAgo } from "@/lib/utils";
-import { PlusIcon } from "@heroicons/react/24/solid";
+import { PlusIcon, UserIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -31,24 +31,31 @@ export default async function Live() {
                 {lives.map((live) => (
                     <Link 
                         href={`/streams/${live.id}`} key={live.id}
-                        className="py-5 flex justify-between gap-2
+                        className="
+                            px-3 py-5 flex justify-between gap-2
                             border-b border-neutral-500 text-neutral-400 
                             last:pb-0 last:border-b-0"
                     >
-                            <div>{live.title}</div>
+                            <div className="flex items-center w-3/7">{live.title}</div>
 
-                            <div className="flex gap-3">
-                                <Image 
-                                    src={live.user.avatar!}
-                                    alt={live.user.username}
-                                    width={30} height={30}
-                                    className="rounded-full"
-                                />
+                            <div className="flex gap-3 items-center w-2/7">
+                                {
+                                    live.user.avatar
+                                    ? <Image 
+                                        src={live.user.avatar!}
+                                        alt={live.user.username}
+                                        width={32} height={32}
+                                        className="rounded-full"
+                                    />
+                                    : <UserIcon className="size-8 rounded-full" />
+                                }
 
-                                <div>{live.user.username}</div>
+                                
+
+                                <div className="flex items-center">{live.user.username}</div>
                             </div>
                             
-                            <div>{formatToTimeAgo(live.created_at.toString())}</div>
+                            <div className="flex items-center w-2/7">{formatToTimeAgo(live.created_at.toString())}</div>
                     </Link>
                 ))}
             </div>

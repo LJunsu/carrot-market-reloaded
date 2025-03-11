@@ -38,6 +38,7 @@ const getChatRooms = async (userId: number) => {
 }
 
 const getCacheChatRooms = unstable_cache(getChatRooms, ["message"], {
+    revalidate: 60,
     tags: ["message"]
 });
 
@@ -89,9 +90,11 @@ export default async function Chat() {
 
     return (
         <div className="flex flex-col gap-3 py-5">
-            {chatRoomList.map((chatRoom, index) => (
+            {chatRoomList.length > 0
+            ? chatRoomList.map((chatRoom, index) => (
                 <ChatRoomList key={chatRoom.id} chatRoom={chatRoom} notReadMessage={notReadMessage[index]} />
-            ))}
+            ))
+            : <div className="w-full h-screen flex items-center justify-center text-center text-xl">채팅이 없습니다.</div>}
         </div>
     )    
 }

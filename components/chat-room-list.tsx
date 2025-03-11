@@ -1,6 +1,7 @@
 "use client";
 
 import { formatToTimeAgo } from "@/lib/utils";
+import { UserIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -39,16 +40,17 @@ export default function ChatRoomList({chatRoom, notReadMessage}: ChatRoomListPro
             border-b border-neutral-500
             last:pb-0 last:border-b-0"
         >
-            <div
-                className="w-full flex justify-between py-5"
-            >
-                <div className="flex items-center gap-3 w-5/6">
-                    <Image
-                        width={50} height={50}
-                        src={chatRoom.users[0].avatar || ""}
+            <div className="w-full flex justify-between py-5 px-3">
+                <div className="flex items-center gap-3 w-4/6">
+                    {chatRoom.users[0].avatar
+                    ? <Image
+                        width={40} height={40}
+                        src={chatRoom.users[0].avatar}
                         alt={chatRoom.users[0].username}
                         className="size-10 rounded-full"
                     />
+                    : <UserIcon className="size-10 rounded-full text-white" />}
+
 
                     <div>
                         <div className="text-white font-bold text-lg">
@@ -61,7 +63,7 @@ export default function ChatRoomList({chatRoom, notReadMessage}: ChatRoomListPro
                     </div>
                 </div>
 
-                <div className="w-1/6 flex flex-col">
+                <div className="w-2/6 flex flex-col">
                 {chatRoom.messages[0] 
                 ? <>
                     <div className="text-neutral-400 flex justify-end">

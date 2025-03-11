@@ -51,7 +51,7 @@ export default function ListCommentWithForm({comments, postId, userId}: ListComm
     }
 
     return (
-        <div className="flex flex-col my-6">
+        <div className="flex flex-col my-6 gap-3">
             <div className="flex flex-col">
                 {optimisticComments.length > 0
                     ? optimisticComments.map((comment) => <ListComment key={comment.id} comment={comment} />)

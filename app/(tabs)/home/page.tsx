@@ -6,7 +6,6 @@ import { unstable_cache } from "next/cache";
 import Link from "next/link";
 
 async function getInitialProduct() {
-    console.log("product");
     const products = await db.product.findMany({
         select: {
             title: true,
@@ -15,7 +14,7 @@ async function getInitialProduct() {
             photo: true,
             id: true,
         },
-        // take: 1,
+        take: 1,
         orderBy: {
             created_at: "desc"
         }

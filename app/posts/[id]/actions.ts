@@ -40,15 +40,11 @@ const formCommentSchema = z.object({
 })
 
 export async function commentPost(formData: FormData) {
-    console.log("commentPost -> formData: ", formData);
     const data = {
         userId: formData.get("userId"),
         postId: formData.get("postId"),
         payload: formData.get("comment"),
     }
-    console.log("commentPost -> data: ", data);
-
-    await new Promise((resolve) => setTimeout(resolve, 5000));
     
     const result = await formCommentSchema.safeParseAsync(data);
     if(!result.success) {

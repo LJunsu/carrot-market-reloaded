@@ -1,5 +1,10 @@
+import UserProductList from "@/components/user-product-list";
 import db from "@/lib/db";
 import getSession from "@/lib/session";
+import { PencilSquareIcon, UserIcon } from "@heroicons/react/24/solid";
+import { Prisma } from "@prisma/client";
+import Image from "next/image";
+import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
 
@@ -21,10 +26,62 @@ async function getUser() {
 }
   
 async function Username() {
-    await new Promise((resolve) => setTimeout(resolve, 5000));
     const user = await getUser();
-    return <h1>Welcome! {user?.username}!</h1>;
+    return (
+        <div className="*:text-white">
+            {user.github_id
+            ? <div className="flex gap-3">
+                {user.avatar
+                ? <Image
+                src={user?.avatar} alt={user?.username}
+                width={40} height={40}
+                className="rounded-full"
+                />
+                : <UserIcon className="size-10 rounded-full" />}
+
+                <h1 className="flex items-center">Welcome! {user?.username}!</h1>
+            </div>
+            : <Link href={`/profile/${user.id}/edit`} className="flex gap-3">
+                {user.avatar
+                ? <Image
+                src={user?.avatar} alt={user?.username}
+                width={40} height={40}
+                className="rounded-full"
+                />
+                : <UserIcon className="size-10 rounded-full" />}
+
+                <h1 className="flex items-center">Welcome! {user?.username}!</h1>
+
+                <PencilSquareIcon className="size-4" />
+            </Link>
+            }
+
+        </div>
+    )
 }
+
+async function getUserProducts(userId: number) {
+    const products = await db.product.findMany({
+        where: {
+            userId: userId
+        },
+        select: {
+            title: true,
+            price: true,
+            created_at: true,
+            photo: true,
+            id: true,
+        },
+        take: 1,
+        orderBy: {
+            created_at: "desc"
+        }
+    });
+
+    return products;
+}
+
+export type InitialProducts = Prisma.PromiseReturnType<typeof getUserProducts>;
   
 export default async function Profile() {
     const logOut = async () => {
@@ -34,15 +91,30 @@ export default async function Profile() {
         redirect("/");
     };
 
-    return (
-        <div>
-            <Suspense fallback={"Welcome!"}>
-                <Username />
-            </Suspense>
+    const user = await getUser();
 
-            <form action={logOut}>
-                <button>Log out</button>
-            </form>
+    const initialProducts = await getUserProducts(user.id);
+
+    return (
+        <div className="p-5 pb-20 flex flex-col gap-5">
+            <div className="w-full flex justify-between">
+                <Suspense fallback={"Welcome!"}>
+                    <Username />
+                </Suspense>
+
+                <form action={logOut} className="flex items-center">
+                    <button>Log out</button>
+                </form>
+            </div>
+
+            <div className="flex flex-col gap-3 h-80">
+                <h1 className="px-5 text-xl font-bold">판매 등록 제품</h1>
+                <UserProductList userId={user.id} initialProducts={initialProducts} />
+            </div>
+
+            <div className="flex flex-col gap-3 h-80">
+                <h1 className="px-5 text-xl font-bold">리뷰</h1>
+            </div>
         </div>
     );
 }

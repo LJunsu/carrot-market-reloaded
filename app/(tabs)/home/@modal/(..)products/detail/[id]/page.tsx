@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { revalidateTag } from "next/cache";
+import { createChatRoom } from "@/app/products/detail/[id]/actions";
 
 async function getModalProduct(id: number) {
 
@@ -83,7 +84,7 @@ export default async function Modal({params}: ModalProductProps) {
                                 className="w-full h-full object-fill rounded-full" fill
                                 src={product.user.avatar} alt={product.user.username}
                             />
-                            : <UserIcon />}
+                            : <UserIcon className="w-full h-full object-fill rounded-full" />}
                         </div>
 
                         <div className="flex items-center">{product.user.username}</div>
@@ -105,12 +106,14 @@ export default async function Modal({params}: ModalProductProps) {
                             href={`/products/detail/${id}/edit`}
                         >수정</Link>
                     </>
-                    : <Link 
-                        className="
-                            bg-orange-500 p-2
+                    : <form action={createChatRoom}>
+                        <input type="hidden" name="productUserId" value={product.userId} />
+                                          
+                        <button 
+                            className="bg-orange-500 p-2
                             rounded-md text-white font-semibold" 
-                        href={``}
-                    >채팅</Link>}
+                        >채팅</button>
+                    </form>}
                 </div>
 
                 <div 
@@ -125,7 +128,7 @@ export default async function Modal({params}: ModalProductProps) {
                         {product.photo === null
                         ? <PhotoIcon className="h-28" />
                         : <Image 
-                            fill src={`${product.photo}/public`} alt={product.title} 
+                            fill src={`${product.photo}`} alt={product.title} 
                             className="w-full h-full object-fill"
                         />}
                     </div>

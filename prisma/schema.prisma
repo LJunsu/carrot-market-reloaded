@@ -49,6 +49,7 @@ model Product {
   price Float
   photo String
   description String
+  isSales Boolean @default(false)
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

@@ -1,7 +1,7 @@
 import db from "@/lib/db";
 import getSession from "@/lib/session";
 import { formatToTimeAgo } from "@/lib/utils";
-import { EyeIcon } from "@heroicons/react/24/solid";
+import { EyeIcon, UserIcon } from "@heroicons/react/24/solid";
 import { unstable_cache } from "next/cache";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -134,13 +134,16 @@ export default async function PostDetail({params}: PostDetailPageProps) {
     return (
         <div className="p-5 text-white">
             <div className="flex items-center gap-2 mb-2">
-                <Image
+                {post.user.avatar
+                ? <Image
                     width={28}
                     height={28}
                     className="size-7 rounded-full"
                     src={post.user.avatar!}
                     alt={post.user.username}
                 />
+                :<UserIcon className="size-7 rounded-full" />}
+
 
                 <div>
                     <span className="text-sm font-semibold">{post.user.username}</span>

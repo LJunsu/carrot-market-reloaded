@@ -1,6 +1,7 @@
 import db from "@/lib/db";
 import { formatToTimeAgo } from "@/lib/utils";
 import { ChatBubbleBottomCenterIcon, HandThumbUpIcon } from "@heroicons/react/24/outline";
+import { PlusIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 
 async function getPosts() {
@@ -28,7 +29,6 @@ export const metadata = {
 }
 export default async function Life() {
     const posts = await getPosts();
-    console.log(posts);
 
     return (
         <div className="p-5 flex flex-col">
@@ -71,6 +71,15 @@ export default async function Life() {
                     </div>
                 </Link>
             ))}
+
+            <Link 
+                href="/life/add" 
+                className="bg-orange-500 flex items-center justify-center 
+                rounded-full size-14 fixed bottom-24 right-8 text-white
+                transition-colors hover:bg-orange-400"
+            >
+                <PlusIcon className="size-10" />
+            </Link>
         </div>
     );
 }

@@ -1,4 +1,5 @@
 import { formatToTimeAgo } from "@/lib/utils";
+import { UserIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 
 interface ListCommentProps {
@@ -23,11 +24,14 @@ export default function ListComment({comment}: ListCommentProps) {
             <div className="flex justify-between *:text-sm">
                 <div className="flex gap-3 ">
                     <div className="flex relative size-7">
-                        <Image 
+                        {comment.user.avatar
+                        ? <Image 
                             fill 
-                            src={comment.user.avatar ? comment.user.avatar : "/default-profile-image.png"} alt={comment.user.username}
+                            src={comment.user.avatar} alt={comment.user.username}
                             className="rounded-full object-cover"
                         />
+                        : <UserIcon className="rounded-full object-cover" />}
+
                     </div>
 
                     <div className="flex items-center font-semibold">
