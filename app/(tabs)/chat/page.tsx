@@ -1,7 +1,6 @@
 import ChatRoomList from "@/components/chat-room-list";
 import db from "@/lib/db";
 import getSession from "@/lib/session"
-import { unstable_cache } from "next/cache";
 import { notFound } from "next/navigation";
 
 const getChatRooms = async (userId: number) => {
@@ -36,11 +35,6 @@ const getChatRooms = async (userId: number) => {
 
     return filteredChatRooms;
 }
-
-const getCacheChatRooms = unstable_cache(getChatRooms, ["message"], {
-    revalidate: 60,
-    tags: ["message"]
-});
 
 const getNotReadMessage = async (userId: number) => {
     const chatRooms = await db.chatRoom.findMany({
@@ -84,7 +78,7 @@ export default async function Chat() {
         return notFound();
     }
 
-    const chatRoomList = await getCacheChatRooms(session.id);
+    const chatRoomList = await getChatRooms(session.id);
 
     const notReadMessage = await getNotReadMessage(session.id);
 

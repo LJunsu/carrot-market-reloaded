@@ -4,6 +4,7 @@ import db from "@/lib/db";
 import { z } from "zod"
 import bcrypt from "bcrypt";
 import Login from "@/lib/login";
+import { PASSWORD_MIN_LENGTH, PASSWORD_REGEX, PASSWORD_REGEX_ERROR } from "@/lib/constants";
 
 const checkEmailExists = async (email: string) => {
     const user = await db.user.findUnique({
@@ -21,13 +22,12 @@ const checkEmailExists = async (email: string) => {
 
 const formSchema = z.object({
     email: z.string({
-        required_error: "Password is required"
+        required_error: "이메일을 입력하세요."
     }).email().toLowerCase()
-    .refine(checkEmailExists, "An account with this email does not exists."),
+    .refine(checkEmailExists, "이 이메일이 포함된 계정이 존재하지 않습니다."),
     password: z.string()
-    // 쉽게 작업하기 위해 임시로 주석 처리
-    // .min(PASSWORD_MIN_LENGTH)
-    // .regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR)
+    .min(PASSWORD_MIN_LENGTH)
+    .regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR)
 })
 
 export const login = async (prevState: unknown, formData: FormData) => {
@@ -56,7 +56,7 @@ export const login = async (prevState: unknown, formData: FormData) => {
         } else {
             return {
                 fieldErrors: {
-                    password: ["Wrong password."],
+                    password: ["잘못된 비밀번호입니다."],
                     email: []
                 }
             }

@@ -3,7 +3,7 @@
 import saveMessage from "@/app/chats/[id]/actions";
 import { InitalChatMessages } from "@/app/chats/[id]/page"
 import { formatToTimeAgo } from "@/lib/utils";
-import { ArrowUpCircleIcon } from "@heroicons/react/24/solid";
+import { ArrowUpCircleIcon, UserIcon } from "@heroicons/react/24/solid";
 import { createClient, RealtimeChannel } from "@supabase/supabase-js";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react"
@@ -85,9 +85,9 @@ export default function ChatMessagesList({chatRoomId, userId, username, avatar, 
 
     return (
         <div className="relative p-5 flex flex-col gap-5 min-h-screen justify-end">
-            <div className="absolute w-full p-3 top-0 left-0">
+            {/* <div className="absolute w-full p-3 top-0 left-0">
                 <Button text="거래 신청" />
-            </div>
+            </div> */}
 
             {messages.map((message) => (
                 <div 
@@ -100,12 +100,15 @@ export default function ChatMessagesList({chatRoomId, userId, username, avatar, 
                     {message.userId === userId
                         ? null
                         :<div className="flex flex-col gap-1 h-full items-center">
-                            <Image
+                            {message.user.avatar
+                            ? <Image
                                 src={message.user.avatar!}
                                 alt={message.user.username}
                                 width={50} height={50}
                                 className="size-8 rounded-full"
                             />
+                            : <UserIcon className="size-8 object-fill rounded-full" />}
+
                             <div>{message.user.username}</div>
                         </div>
                     }
@@ -143,7 +146,7 @@ export default function ChatMessagesList({chatRoomId, userId, username, avatar, 
                     value={message}
                     type="text"
                     name="message"
-                    placeholder="Write a message..."
+                    placeholder="메시지를 입력하세요."
                     className="
                         bg-transparent rounded-full w-full h-10 
                         focus:outline-none px-5 ring-2 focus:ring-4 

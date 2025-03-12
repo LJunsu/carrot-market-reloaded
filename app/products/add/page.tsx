@@ -47,7 +47,7 @@ export default function AddProduct() {
 
     const interceptAction = async (_: unknown, formData: FormData) => {
         const file = formData.get("photo");
-        if(!file) {
+        if(!file || (file instanceof File && file.size === 0)) {
             return;
         }
         const cloudflareForm = new FormData();

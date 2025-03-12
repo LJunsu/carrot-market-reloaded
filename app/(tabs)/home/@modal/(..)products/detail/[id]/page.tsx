@@ -5,9 +5,9 @@ import { formatToWon } from "@/lib/utils";
 import { PhotoIcon, UserIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
-import { revalidateTag } from "next/cache";
+import { notFound } from "next/navigation";
 import { createChatRoom } from "@/app/products/detail/[id]/actions";
+import ProductDeleteButton from "@/components/product-delete-button";
 
 async function getModalProduct(id: number) {
 
@@ -49,23 +49,26 @@ export default async function Modal({params}: ModalProductProps) {
 
     const isOwner = await getIsOwner(product.userId);
 
-    const productDelete = async () => {
-        "use server";
+    const session = await getSession();
+    if(!session.id) return;
 
-        const session = await getSession();
-        if(session.id !== product.userId) {
-            return
-        }
+    // const productDelete = async () => {
+    //     "use server";
 
-        await db.product.delete({
-            where: {
-                id: product.id
-            }
-        });
+    //     const session = await getSession();
+    //     if(session.id !== product.userId) {
+    //         return
+    //     }
 
-        revalidateTag("products");
-        redirect("/home");
-    }
+    //     await db.product.delete({
+    //         where: {
+    //             id: product.id
+    //         }
+    //     });
+
+    //     revalidateTag("products");
+    //     redirect("/home");
+    // }
 
     return (
         <div 
@@ -91,13 +94,15 @@ export default async function Modal({params}: ModalProductProps) {
                     </div>
 
                     {isOwner 
-                    ? <>
-                        <form action={productDelete}>
+                    ? <div className="flex gap-3">
+                        {/* <form action={productDelete}>
                             <button className="
                                 bg-red-500 p-2
                                 rounded-md text-white font-semibold"
                             >삭제</button>
-                        </form>
+                        </form> */}
+
+                        <ProductDeleteButton userId={session.id} productId={product.id} productUserId={product.userId} />
 
                         <Link 
                             className="
@@ -105,7 +110,7 @@ export default async function Modal({params}: ModalProductProps) {
                                 rounded-md text-white font-semibold" 
                             href={`/products/detail/${id}/edit`}
                         >수정</Link>
-                    </>
+                    </div>
                     : <form action={createChatRoom}>
                         <input type="hidden" name="productUserId" value={product.userId} />
                                           

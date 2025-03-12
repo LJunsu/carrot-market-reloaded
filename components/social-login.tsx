@@ -25,7 +25,7 @@ export default function SocialLogin() {
                         ></path>
                     </svg>
 
-                    <span>Continue with Github</span>
+                    <span>Github으로 진행하기</span>
                 </Link>
 
                 <Link 
@@ -33,7 +33,7 @@ export default function SocialLogin() {
                     className="primary-btn flex h-10 items-center justify-center gap-3"
                 >
                     <span><ChatBubbleOvalLeftEllipsisIcon className="w-6 h-6" /></span>
-                    <span>Continue with SMS</span>
+                    <span>SMS로 진행하기</span>
                 </Link>
             </div>
         </>

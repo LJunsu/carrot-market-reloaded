@@ -91,14 +91,14 @@ export default async function StreamDetail({params}: StreamDetailPageProps) {
 
             {stream.userId === session.id! 
                 ? (<>
-                <div className="bg-yellow-200 text-black p-5 rounded-md">
-                    <div className="flex gap-2">
-                        <span className="font-semibold">Stream URL:</span>
+                <div className="flex flex-col gap-5 bg-yellow-200 text-black p-5 rounded-md *:break-words">
+                    <div className="flex flex-col gap-1">
+                        <span className="font-semibold">Stream URL</span>
                         <span>rtmps://live.cloudflare.com:443/live/</span>
                     </div>
 
-                    <div className="flex flex-wrap">
-                        <span className="font-semibold">Secret Key:</span>
+                    <div className="flex flex-col gap-1 *:break-words">
+                        <span className="font-semibold">Secret Key</span>
                         <span>{stream.stream_key}</span>
                     </div>
                 </div>

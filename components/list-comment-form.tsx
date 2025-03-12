@@ -2,7 +2,7 @@
 
 import { commentPost } from "@/app/posts/[id]/actions";
 import ListComment from "./list-comment";
-import { useOptimistic, useState } from "react";
+import { startTransition, useOptimistic, useState } from "react";
 import userInfoSelect from "@/lib/user";
 
 interface ListCommentWithFormProps {
@@ -22,13 +22,17 @@ interface ListCommentWithFormProps {
 export default function ListCommentWithForm({comments, postId, userId}: ListCommentWithFormProps) {
     const [optimisticComments, addOptimisticComment] = useOptimistic(comments);
     const [commentText, setCommentText] = useState("");
+    const [commentError, setCommentError] = useState("");
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
 
         const formData = new FormData(e.target as HTMLFormElement);
         const comment = String(formData.get("comment"));
-        if(!comment || comment.length < 3) return;
+        if(!comment || comment.length < 3) {
+            setCommentError("댓글은 3글자 이상 입력해야 합니다.")
+            return;
+        }
 
         const userInfo = await userInfoSelect(userId);
 
@@ -43,7 +47,9 @@ export default function ListCommentWithForm({comments, postId, userId}: ListComm
             payload: comment || ""
         }
 
-        addOptimisticComment((prev) => [...prev, newComment]);
+        startTransition(() => {
+            addOptimisticComment((prev) => [...prev, newComment]);
+        });
 
         setCommentText("");
 
@@ -76,7 +82,10 @@ export default function ListCommentWithForm({comments, postId, userId}: ListComm
                     <textarea
                         name="comment" 
                         value={commentText}
-                        onChange={(e) => setCommentText(e.target.value)}
+                        onChange={(e) => {
+                            setCommentError("")
+                            setCommentText(e.target.value)}
+                        }
                         className="
                         bg-transparent rounded-md w-full h-20 
                         border-none focus:outline-none
@@ -84,6 +93,9 @@ export default function ListCommentWithForm({comments, postId, userId}: ListComm
                         ring-neutral-200 focus:ring-orange-500
                         placeholder:text-neutral-400"
                     />
+                    {commentError
+                    ? <div className="text-red-500 font-medium">{commentError}</div>
+                    : null}
 
                     <button 
                         type="submit"

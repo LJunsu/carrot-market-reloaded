@@ -28,6 +28,8 @@ export default async function Live() {
     return (
         <div>
             <div className="*:text-white">
+                {lives.length <= 0 && <div className="w-full h-screen flex items-center justify-center text-center text-xl">방송이 없습니다.</div>}
+
                 {lives.map((live) => (
                     <Link 
                         href={`/streams/${live.id}`} key={live.id}
@@ -49,8 +51,6 @@ export default async function Live() {
                                     />
                                     : <UserIcon className="size-8 rounded-full" />
                                 }
-
-                                
 
                                 <div className="flex items-center">{live.user.username}</div>
                             </div>

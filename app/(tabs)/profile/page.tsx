@@ -39,7 +39,7 @@ async function Username() {
                 />
                 : <UserIcon className="size-10 rounded-full" />}
 
-                <h1 className="flex items-center">Welcome! {user?.username}!</h1>
+                <h1 className="flex items-center">반갑습니다! {user?.username}님!</h1>
             </div>
             : <Link href={`/profile/${user.id}/edit`} className="flex gap-3">
                 {user.avatar
@@ -50,7 +50,7 @@ async function Username() {
                 />
                 : <UserIcon className="size-10 rounded-full" />}
 
-                <h1 className="flex items-center">Welcome! {user?.username}!</h1>
+                <h1 className="flex items-center">반갑습니다! {user?.username}님!</h1>
 
                 <PencilSquareIcon className="size-4" />
             </Link>
@@ -103,17 +103,19 @@ export default async function Profile() {
                 </Suspense>
 
                 <form action={logOut} className="flex items-center">
-                    <button>Log out</button>
+                    <button>로그아웃</button>
                 </form>
             </div>
 
             <div className="flex flex-col gap-3 h-80">
                 <h1 className="px-5 text-xl font-bold">판매 등록 제품</h1>
+                {initialProducts.length <= 0 && <div className="w-full h-screen flex items-center justify-center text-center text-xl">등록된 제품이 없습니다.</div>}
                 <UserProductList userId={user.id} initialProducts={initialProducts} />
             </div>
 
             <div className="flex flex-col gap-3 h-80">
                 <h1 className="px-5 text-xl font-bold">리뷰</h1>
+                <div className="w-full text-center">미구현</div>
             </div>
         </div>
     );

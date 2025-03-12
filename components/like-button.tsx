@@ -2,7 +2,7 @@
 
 import { HandThumbUpIcon } from "@heroicons/react/24/solid";
 import { HandThumbUpIcon as OutlineHandThumbUpIcon } from "@heroicons/react/24/outline";
-import { useOptimistic } from "react";
+import { startTransition, useOptimistic } from "react";
 import { dislikePost, likePost } from "@/app/posts/[id]/actions";
 
 interface LikeButtonProps {
@@ -24,7 +24,9 @@ export default function LikeButton({isLiked, likeCount, postId}: LikeButtonProps
     })
 
     const onClick = async () => {
-        reducerFn(undefined);
+        startTransition(() => {
+            reducerFn(undefined);
+        });
 
         if(isLiked) {
             await dislikePost(postId);

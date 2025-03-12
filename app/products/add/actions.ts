@@ -16,7 +16,7 @@ export async function uploadProduct(_: unknown, formData: FormData) {
     };
 
     if(data.photo instanceof File && data.photo.size <= 0) {
-        return { fieldErrors: { photo: "Photo is required" } };
+        return { fieldErrors: { photo: "이미지를 등록하세요." } };
     }
 
     if(data.photo instanceof File) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { updateProfile } from "@/app/(tabs)/profile/[id]/edit/actions";
+import { isCheckPassword, updateProfile } from "@/app/(tabs)/profile/[id]/edit/actions";
 import { ProfileType, profileUpdateSchema } from "@/app/(tabs)/profile/[id]/edit/schema";
 import { getUploadUrl } from "@/app/products/add/actions";
 import { PhotoIcon } from "@heroicons/react/24/solid";
@@ -25,12 +25,12 @@ export default function ProfileEditForm({profile}: ProfileEditFormProps) {
     const [preview, setPreview] = useState("");
     const [uplodaUrl, setUploadUrl] = useState("");
     const [imageId, setImageId] = useState("");
+    const [IsCheckPassword, setIsCheckPassword] = useState(false);
 
     const {register, setValue} = useForm<ProfileType>({
         resolver: zodResolver(profileUpdateSchema),
         defaultValues: {
             username: "",
-            prevPassword: "",
             phone: ""
         }
     });
@@ -93,77 +93,105 @@ export default function ProfileEditForm({profile}: ProfileEditFormProps) {
     
     const [state, action] = useActionState(interceptAction, null);
 
-    return (
-        <form action={action} className="flex flex-col gap-3">
-            <label 
-                htmlFor="avatar" 
-                className="border-2 aspect-square text-neutral-300
-                flex flex-col items-center justify-center rounded-md
-                border-neutral-300 border-dashed cursor-pointer
-                bg-center bg-cover"
-                style={{backgroundImage: `url(${preview})`}}
-            >
-                {preview === "" 
-                ? <>
-                    <PhotoIcon className="w-20" />
+    const getCheckPassword = async (_: unknown, formData: FormData) => {
+        setPasswordCheckError([]);
+        const isCheck = await isCheckPassword(formData);
+        
+        if(isCheck) {
+            setIsCheckPassword(true);
+        } else {
+            setPasswordCheckError(["비밀번호가 일치하지 않습니다."]);
+        }
+    }
 
-                    <div className="text-neutral-400 text-sm">
-                        사진을 추가해주세요.
-                    </div>
-                </> : null}
-            </label>
-            
-            <input 
-                onChange={onImageChange}
-                type="file" id="avatar" name="avatar" accept="image/*"
-                className="hidden"
-            />
+    const [passwordCheckError, setPasswordCheckError] = useState<string[]>([]);
+    /* eslint-disable @typescript-eslint/no-unused-vars */
+    const [checkPasswordState, checkPasswordAction] = useActionState(getCheckPassword, null);
 
-            <input 
-                type="text" name="userId" className="hidden" defaultValue={profile.id}
-            />
+    if(IsCheckPassword) {
+        return (
+            <form action={action} 
+            className="flex flex-row justify-between gap-3 sm:flex-col">
+                <div className="w-1/2 sm:w-full">
+                    <label 
+                        htmlFor="avatar" 
+                        className="border-2 aspect-square text-neutral-300
+                        flex flex-col items-center justify-center rounded-md
+                        border-neutral-300 border-dashed cursor-pointer
+                        bg-center bg-cover"
+                        style={{backgroundImage: `url(${preview})`}}
+                    >
+                        {preview === "" 
+                        ? <>
+                            <PhotoIcon className="w-20" />
+        
+                            <div className="text-neutral-400 text-sm">
+                                사진을 추가해주세요.
+                            </div>
+                        </> : null}
+                    </label>
+                    
+                    <input 
+                        onChange={onImageChange}
+                        type="file" id="avatar" name="avatar" accept="image/*"
+                        className="hidden"
+                    />
+        
+                    <input 
+                        type="text" name="userId" className="hidden" defaultValue={profile.id}
+                    />
+                </div>
+                            
+                <div className="w-1/2 sm:mb-20 flex flex-col justify-between sm:w-full sm:gap-3">
+                    <Input
+                        type="text"
+                        required
+                        placeholder="닉네임"
+                        {...register("username")}
+                        errors={state?.fieldErrors && "username" in state.fieldErrors ? state.fieldErrors.username : undefined}
+                    />
+        
+                    <Input
+                        type="text"
+                        placeholder="전화번호"
+                        {...register("phone")}
+                        errors={state?.fieldErrors && "phone" in state.fieldErrors ? state.fieldErrors.phone : undefined}
+                    />
+        
+                    <Input
+                        type="password"
+                        placeholder="변경할 비밀번호"
+                        {...register("nextPassword")}
+                        errors={state?.fieldErrors && "nextPassword" in state.fieldErrors ? state.fieldErrors.nextPassword : undefined}
+                    />
+        
+                    <Input
+                        type="password"
+                        placeholder="변경할 비밀번호 확인"
+                        {...register("checkPassword")}
+                        errors={state?.fieldErrors && "checkPassword" in state.fieldErrors ? state.fieldErrors.checkPassword : undefined}
+                    />
+        
+                    <Button text="프로필 수정" />
+                </div>
+            </form>
+        )
+    } else {
+        return (
+            <div className="flex flex-col gap-3">
+                <div>패스워드를 입력하세요.</div>
 
-            <Input
-                type="text"
-                required
-                placeholder="닉네임"
-                {...register("username")}
-                errors={state?.fieldErrors && "username" in state.fieldErrors ? state.fieldErrors.username : undefined}
-            />
+                <form action={checkPasswordAction} className="flex flex-col gap-3">
+                    <Input 
+                        type="password" 
+                        name="password" 
+                        placeholder="패스워드를 입력하세요."
+                        errors={passwordCheckError}
+                    />
 
-            <Input
-                type="text"
-                required
-                placeholder="전화번호"
-                {...register("phone")}
-                errors={state?.fieldErrors && "phone" in state.fieldErrors ? state.fieldErrors.phone : undefined}
-            />
-
-            <Input
-                type="password"
-                required
-                placeholder="기존 비밀번호"
-                {...register("prevPassword")}
-                errors={state?.fieldErrors && "prevPassword" in state.fieldErrors ? state.fieldErrors.prevPassword : undefined}
-            />
-
-            <Input
-                type="password"
-                required
-                placeholder="변경할 비밀번호"
-                {...register("nextPassword")}
-                errors={state?.fieldErrors && "nextPassword" in state.fieldErrors ? state.fieldErrors.nextPassword : undefined}
-            />
-
-            <Input
-                type="password"
-                required
-                placeholder="변경할 비밀번호 확인"
-                {...register("checkPassword")}
-                errors={state?.fieldErrors && "checkPassword" in state.fieldErrors ? state.fieldErrors.checkPassword : undefined}
-            />
-
-            <Button text="프로필 수정" />
-        </form>
-    )
+                    <Button text="비밀번호 확인" />
+                </form>
+            </div>
+        )
+    }
 }

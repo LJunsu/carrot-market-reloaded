@@ -25,7 +25,7 @@ export default function LifeAdd() {
                 <Input
                     type="text"
                     required
-                    placeholder="제목"
+                    placeholder="제목을 입력하세요."
                     {...register("title")}
                     errors={state?.fieldErrors.title}
                 />
@@ -39,7 +39,7 @@ export default function LifeAdd() {
                         ring-neutral-200 focus:ring-orange-500
                         placeholder:text-neutral-400"
                         required
-                        placeholder="내용"
+                        placeholder="내용을 입력하세요."
                         {...register("description")}
                     />
 

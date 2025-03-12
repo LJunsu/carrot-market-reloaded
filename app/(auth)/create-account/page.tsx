@@ -24,7 +24,7 @@ export default function CreateAccount() {
         <div className="flex flex-col gap-10 py-8 px-6">
             <div className="flex flex-col gap-2 *:font-medium">
                 <h1 className="text-2xl">안녕하세요!</h1>
-                <h2 className="text-xl">Fill in the form below to join!</h2>
+                <h2 className="text-xl">양식을 작성하여 회원가입 하세요.</h2>
             </div>
 
             <form 
@@ -34,9 +34,8 @@ export default function CreateAccount() {
                 <Input
                     name="username"
                     type="text"
-                    placeholder="Username"
+                    placeholder="이름"
                     required
-                    // errors={state?.fieldErrors.username}
                     errors={error?.fieldErrors.username}
                     minLength={3}
                     maxLength={10}
@@ -46,9 +45,8 @@ export default function CreateAccount() {
                 <Input
                     name="email"
                     type="email"
-                    placeholder="Email"
+                    placeholder="이메일"
                     required
-                    // errors={state?.fieldErrors.email}
                     errors={error?.fieldErrors.email}
                     defaultValue={(email as string) ?? ""}
                 />
@@ -56,9 +54,8 @@ export default function CreateAccount() {
                 <Input
                     name="password"
                     type="password"
-                    placeholder="Password"
+                    placeholder="비밀번호"
                     required
-                    // errors={state?.fieldErrors.password}
                     errors={error?.fieldErrors.password}
                     minLength={PASSWORD_MIN_LENGTH}
                     defaultValue={(password as string) ?? ""}
@@ -67,16 +64,15 @@ export default function CreateAccount() {
                 <Input
                     name="confirm_password"
                     type="password"
-                    placeholder="Confirm Password"
+                    placeholder="비밀번호 확인"
                     required
-                    // errors={state?.fieldErrors.confirm_password}
                     errors={error?.fieldErrors.confirm_password}
                     minLength={PASSWORD_MIN_LENGTH}
                     defaultValue={(confirm_password as string) ?? ""}
                 />
 
                 <Button
-                    text="Create account"
+                    text="계정 생성"
                 />
             </form>
 

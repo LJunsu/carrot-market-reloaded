@@ -14,10 +14,10 @@ const checkPasswords =
 
 const formSchema = z.object({
     username: z.string({
-        invalid_type_error: "Username must be a string!",
-        required_error: "Where is my username?"
+        invalid_type_error: "이름은 반드시 문자여야 합니다.",
+        required_error: "이름을 입력하세요."
     }).toLowerCase().trim()//.transform(username => `${username}🔥`)
-        .refine(username => checkUsername(username), "No potatoes allowed!"),
+        .refine(username => checkUsername(username), "이 이름은 이미 사용 중 입니다."),
 
     email: z.string().email().toLowerCase(),
 
@@ -36,7 +36,7 @@ const formSchema = z.object({
     if(user) {
         ctx.addIssue({
             code: "custom",
-            message: "This username is already taken",
+            message: "이 이름은 이미 사용 중 입니다.",
             path: ["username"],
             fatal: true
         });
@@ -54,14 +54,14 @@ const formSchema = z.object({
     if(user) {
         ctx.addIssue({
             code: "custom",
-            message: "This email is already taken",
+            message: "이 이메일은 이미 사용 중 입니다.",
             path: ["email"],
             fatal: true
         });
         return z.NEVER;
     }
 }).refine(checkPasswords, {
-    message: "Both passwords should be the same!",
+    message: "두 비밀번호가 일치하지 않습니다.",
     path: ["confirm_password"]
 });
 

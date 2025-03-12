@@ -32,7 +32,7 @@ export default async function ProfileEdit({params}: ProfileEditProps) {
     if(!profile) return notFound();
 
     return (
-        <div className="p-5 flex flex-col gap-3">
+        <div className="p-5 flex flex-col gap-3 mx-8">
             <div className="text-2xl">프로필 수정</div>
             <ProfileEditForm profile={profile} />
         </div>

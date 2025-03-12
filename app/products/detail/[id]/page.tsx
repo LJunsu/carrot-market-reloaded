@@ -113,10 +113,10 @@ export default async function ProductDetail({params}: ProductDetailPageProps) {
                 className="fixed w-full bottom-0 left-0 p-5 pb-10
                 bg-neutral-800 flex justify-between items-center"
             >
-                <span className="font-semibold text-lg1">{formatToWon(product.price)} 원</span>
+                <span className="font-semibold text-2xl">{formatToWon(product.price)} 원</span>
                 
                 {isOwner 
-                ? <>
+                ? <div className="flex gap-3">
                     <form action={productDelete}>
                         <button className="bg-red-500 px-5 py-2.5 
                             rounded-md text-white font-semibold"
@@ -129,7 +129,7 @@ export default async function ProductDetail({params}: ProductDetailPageProps) {
                             rounded-md text-white font-semibold" 
                         href={`/products/detail/${id}/edit`}
                     >수정</Link>
-                </>
+                </div>
                 : <form action={createChatRoom}>
                     <input type="hidden" name="productUserId" value={product.userId} />
                       

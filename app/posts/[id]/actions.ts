@@ -36,7 +36,11 @@ export async function dislikePost(postId: number) {
 const formCommentSchema = z.object({
     userId: z.string(),
     postId: z.string(),
-    payload: z.string().min(3).max(500)
+    payload: z.string().min(3, {
+        message: "3글자 이상, 500글자 이하로 입력하세요."
+    }).max(500, {
+        message: "3글자 이상, 500글자 이하로 입력하세요."
+    })
 })
 
 export async function commentPost(formData: FormData) {

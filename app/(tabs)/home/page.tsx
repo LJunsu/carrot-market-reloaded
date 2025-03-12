@@ -36,6 +36,8 @@ export default async function Products() {
 
     return (
         <div className="p-5 pb-20 flex flex-col gap-5">
+            {initialProducts.length <= 0 && <div className="w-full h-screen flex items-center justify-center text-center text-xl">등록된 제품이 없습니다.</div>}
+
             <ProductList initialProducts={initialProducts} />
 
             <Link 
