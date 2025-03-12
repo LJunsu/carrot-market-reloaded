@@ -7,7 +7,6 @@ import { ArrowUpCircleIcon, UserIcon } from "@heroicons/react/24/solid";
 import { createClient, RealtimeChannel } from "@supabase/supabase-js";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react"
-import Button from "./button";
 
 const SUPABASE_PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZqeXRwYnBzZXRpb3pzY2VnaGd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDExNjk4NDIsImV4cCI6MjA1Njc0NTg0Mn0.W9YqHQx2J75TL-qd7eO6HD-ozMgWPbuCbCHTZcHSwIU";
 const SUPABASE_URL = "https://fjytpbpsetiozsceghgt.supabase.co";
