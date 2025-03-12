@@ -2,6 +2,7 @@ import db from "@/lib/db";
 import { formatToTimeAgo } from "@/lib/utils";
 import { ChatBubbleBottomCenterIcon, HandThumbUpIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/24/solid";
+import { revalidatePath } from "next/cache";
 import Link from "next/link";
 
 async function getPosts() {
@@ -20,6 +21,8 @@ async function getPosts() {
             }
         }
     });
+
+    revalidatePath("/life")
 
     return posts;
 }
