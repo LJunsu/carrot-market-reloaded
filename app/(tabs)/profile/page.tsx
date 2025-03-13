@@ -113,10 +113,10 @@ export default async function Profile() {
                 <UserProductList userId={user.id} initialProducts={initialProducts} />
             </div>
 
-            <div className="flex flex-col gap-3 h-80">
+            {/* <div className="flex flex-col gap-3 h-80">
                 <h1 className="px-5 text-xl font-bold">리뷰</h1>
                 <div className="w-full text-center">미구현</div>
-            </div>
+            </div> */}
         </div>
     );
 }
