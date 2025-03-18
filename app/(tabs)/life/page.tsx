@@ -2,7 +2,7 @@ import db from "@/lib/db";
 import { formatToTimeAgo } from "@/lib/utils";
 import { ChatBubbleBottomCenterIcon, HandThumbUpIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/24/solid";
-import { unstable_cache } from "next/cache";
+// import { unstable_cache } from "next/cache";
 import Link from "next/link";
 
 async function getPosts() {
@@ -25,14 +25,14 @@ async function getPosts() {
     return posts;
 }
 
-const getCachedPost = unstable_cache(getPosts, ["post"], {revalidate: 60, tags: ["post"]})
+// const getCachedPost = unstable_cache(getPosts, ["post"], {revalidate: 60, tags: ["post"]})
 
 export const metadata = {
     title : "동네생활"
 }
 export default async function Life() {
-    // const posts = await getPosts();
-    const posts = await getCachedPost();
+    const posts = await getPosts();
+    // const posts = await getCachedPost();
 
     return (
         <div className="p-5 flex flex-col">

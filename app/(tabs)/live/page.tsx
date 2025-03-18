@@ -28,7 +28,14 @@ export default async function Live() {
     return (
         <div>
             <div className="*:text-white">
-                {lives.length <= 0 && <div className="w-full h-screen flex items-center justify-center text-center text-xl">방송이 없습니다.</div>}
+                {/* {lives.length <= 0 && <div className="w-full h-screen flex items-center justify-center text-center text-xl">방송이 없습니다.</div>} */}
+
+                {!lives || lives.length === 0 
+                ? (
+                    <div className="w-full h-screen flex items-center justify-center text-center text-xl">
+                        방송이 없습니다.
+                    </div>) 
+                : (null)}
 
                 {lives.map((live) => (
                     <Link 
