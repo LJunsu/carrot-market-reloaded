@@ -82,6 +82,7 @@ export default function ListCommentWithForm({comments, postId, userId}: ListComm
                     <textarea
                         name="comment" 
                         value={commentText}
+                        placeholder="3글자 이상 입력하세요."
                         onChange={(e) => {
                             setCommentError("")
                             setCommentText(e.target.value)}

@@ -42,10 +42,10 @@ async function getPost(id: number) {
     }
 }
 
-const getCachedPost = unstable_cache(getPost, ["post-detail"], {
-    tags: ["post-detail"],
-    revalidate: 60
-});
+// const getCachedPost = unstable_cache(getPost, ["post-detail"], {
+//     tags: ["post-detail"],
+//     revalidate: 60
+// });
 
 async function getLikeStatus(postId: number, userId: number) {
     const isLiked = await db.like.findUnique({
@@ -103,9 +103,9 @@ async function getComment(id: number) {
     return comments;
 }
 
-const getCachedComment = unstable_cache(getComment, ["post-detail"], {
-    tags: ["post-detail"]
-})
+// const getCachedComment = unstable_cache(getComment, ["post-detail"], {
+//     tags: ["post-detail"]
+// })
 
 interface PostDetailPageProps {
     params: Promise<{id: string}>;
@@ -117,7 +117,8 @@ export default async function PostDetail({params}: PostDetailPageProps) {
         return notFound();
     }
 
-    const post = await getCachedPost(numberId);
+    // const post = await getCachedPost(numberId);
+    const post = await getPost(numberId);
     if(!post) {
         return notFound();
     }
@@ -127,7 +128,8 @@ export default async function PostDetail({params}: PostDetailPageProps) {
         return notFound();
     }
 
-    const comments = await getCachedComment(numberId);
+    // const comments = await getCachedComment(numberId);
+    const comments = await getComment(numberId);
 
     const { likeCount, isLiked } = await getCachedLikeStatus(numberId);
 
@@ -169,48 +171,6 @@ export default async function PostDetail({params}: PostDetailPageProps) {
 
             <Suspense fallback={<ListCommentSkeleton />}>
                 <ListCommentWithForm comments={comments} postId={numberId} userId={userId} />
-
-                {/* <div className="flex flex-col my-6">
-                    <div className="flex flex-col">
-                        {comments
-                            ? comments.map((comment) => <ListComment key={comment.id} comment={comment} />)
-                            : <span>댓글이 없습니다.</span>
-                        }
-                    </div>
-
-                    <div>
-                        <form action={commentPost} className="flex flex-col gap-3">
-                            <input 
-                                type="text" name="userId"
-                                defaultValue={userId}
-                                className="hidden" readOnly 
-                            />
-
-                            <input 
-                                type="text" name="postId"
-                                defaultValue={numberId}
-                                className="hidden" readOnly 
-                            />
-
-                            <textarea
-                                name="comment" 
-                                className="
-                                bg-transparent rounded-md w-full h-20 
-                                border-none focus:outline-none
-                                ring-2 focus:ring-4 transition
-                                ring-neutral-200 focus:ring-orange-500
-                                placeholder:text-neutral-400"
-                            />
-
-                            <button 
-                                className="
-                                primary-btn h-10 
-                                disabled:bg-neutral-400 disabled:text-neutral-300 
-                                disabled:cursor-not-allowed"
-                            >댓글 작성</button>
-                        </form>
-                    </div>
-                </div> */}
             </Suspense>
         </div>
     )
