@@ -42,10 +42,10 @@ async function getPost(id: number) {
     }
 }
 
-// const getCachedPost = unstable_cache(getPost, ["post-detail"], {
-//     tags: ["post-detail"],
-//     revalidate: 60
-// });
+const getCachedPost = unstable_cache(getPost, ["post"], {
+    tags: ["post"],
+    revalidate: 60
+});
 
 async function getLikeStatus(postId: number, userId: number) {
     const isLiked = await db.like.findUnique({
@@ -103,9 +103,9 @@ async function getComment(id: number) {
     return comments;
 }
 
-// const getCachedComment = unstable_cache(getComment, ["post-detail"], {
-//     tags: ["post-detail"]
-// })
+const getCachedComment = unstable_cache(getComment, ["post"], {
+    tags: ["post"]
+})
 
 interface PostDetailPageProps {
     params: Promise<{id: string}>;
@@ -117,8 +117,8 @@ export default async function PostDetail({params}: PostDetailPageProps) {
         return notFound();
     }
 
-    // const post = await getCachedPost(numberId);
-    const post = await getPost(numberId);
+    const post = await getCachedPost(numberId);
+    // const post = await getPost(numberId);
     if(!post) {
         return notFound();
     }
@@ -128,8 +128,8 @@ export default async function PostDetail({params}: PostDetailPageProps) {
         return notFound();
     }
 
-    // const comments = await getCachedComment(numberId);
-    const comments = await getComment(numberId);
+    const comments = await getCachedComment(numberId);
+    // const comments = await getComment(numberId);
 
     const { likeCount, isLiked } = await getCachedLikeStatus(numberId);
 
