@@ -36,7 +36,14 @@ export default async function Life() {
 
     return (
         <div className="p-5 flex flex-col">
-            {posts.length <= 0 && <div className="w-full h-screen flex items-center justify-center text-center text-xl">게시글이 없습니다.</div>}
+            {/* {posts.length <= 0 && <div className="w-full h-screen flex items-center justify-center text-center text-xl">게시글이 없습니다.</div>} */}
+            {!posts || posts.length === 0 
+            ? (
+                <div className="w-full h-screen flex items-center justify-center text-center text-xl">
+                    게시글이 없습니다.
+                </div>) 
+            : (null)}
+            
             {posts.map((post) => (
                 <Link 
                     key={post.id} href={`/posts/${post.id}`}
@@ -80,7 +87,7 @@ export default async function Life() {
             <Link 
                 href="/life/add" 
                 className="bg-orange-500 flex items-center justify-center 
-                rounded-full size-14 fixed bottom-24 right-8 text-white
+                rounded-full size-14 fixed bottom-24 text-white
                 transition-colors hover:bg-orange-400"
             >
                 <PlusIcon className="size-10" />

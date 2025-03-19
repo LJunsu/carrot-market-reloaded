@@ -26,7 +26,7 @@ export default async function Live() {
     const lives = await getLives(); 
 
     return (
-        <div>
+        <div className="p-5 flex flex-col">
             <div className="*:text-white">
                 {/* {lives.length <= 0 && <div className="w-full h-screen flex items-center justify-center text-center text-xl">방송이 없습니다.</div>} */}
 
@@ -70,7 +70,7 @@ export default async function Live() {
             <Link 
                 href="/streams/add" 
                 className="bg-orange-500 flex items-center justify-center 
-                rounded-full size-14 fixed bottom-24 right-8 text-white
+                rounded-full size-14 fixed bottom-24 text-white
                 transition-colors hover:bg-orange-400"
             >
                 <PlusIcon className="size-10" />

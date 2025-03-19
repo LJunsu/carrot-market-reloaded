@@ -57,7 +57,7 @@ export default function UserProductList({userId, initialProducts}: ProductListPr
             {!isLastPage ? <span
                 ref={trigger}
                 style={{
-                    marginTop: `${page + 1 * 20}vh`
+                    marginTop: `${page + 1 * 80}vh`
                 }}
                 className="mb-96
                 text-sm font-semibold bg-orange-500

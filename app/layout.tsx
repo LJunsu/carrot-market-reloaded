@@ -31,7 +31,8 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={
-          `${roboto.variable} ${rubik.variable} bg-neutral-900 text-white max-w-screen-sm mx-auto`
+          // `${roboto.variable} ${rubik.variable} bg-neutral-900 text-white max-w-screen-sm mx-auto`
+          `${roboto.variable} ${rubik.variable} bg-neutral-900 text-white max-w-lg mx-auto`
         }
       >
         {children}
