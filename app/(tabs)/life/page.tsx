@@ -36,7 +36,6 @@ export default async function Life() {
 
     return (
         <div className="p-5 flex flex-col">
-            {/* {posts.length <= 0 && <div className="w-full h-screen flex items-center justify-center text-center text-xl">게시글이 없습니다.</div>} */}
             {!posts || posts.length === 0 
             ? (
                 <div className="w-full h-screen flex items-center justify-center text-center text-xl">
